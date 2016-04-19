@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="ContentPipe.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Libraries\BodyController.cs" />
+    <Compile Include="Libraries\BodyPart.cs" />
     <Compile Include="Libraries\Buffer.cs" />
     <Compile Include="Libraries\Camera.cs" />
     <Compile Include="Libraries\TextWriter.cs" />
@@ -199,6 +201,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Alphabet\selected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\BodyParts\Body.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\BodyParts\Eye.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\BodyParts\Hand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\BodyParts\Head.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\BodyParts\Mouth.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\BodyParts\FootLeft.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\BodyParts\FootRight.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

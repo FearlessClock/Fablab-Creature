@@ -46,6 +46,7 @@ namespace Fablab_Creature
         public GameWindow window;
         Texture2D texture;
 
+        BodyController bodyController;
         TextWriter textWriter;
 
         //Start of the vertex buffer
@@ -63,7 +64,8 @@ namespace Fablab_Creature
             window.Closing += Window_Closing;
             Camera.SetupCamera(window, 30);
             textWriter = new TextWriter("Alphabet/");
-
+            bodyController = new BodyController();
+            
             window.CursorVisible = false;
         }
 
@@ -109,6 +111,7 @@ namespace Fablab_Creature
         {
 
         }
+        int counter = 0;
         private void Window_UpdateFrame(object sender, FrameEventArgs e)
         {
             CursorBuf = Camera.CameraUpdate();
@@ -116,12 +119,15 @@ namespace Fablab_Creature
             {
                 BufferFill(b);
             }
+            bodyController.Update();
+            counter++;
         }
 
+        System.Diagnostics.Stopwatch stop = new System.Diagnostics.Stopwatch();
         private void Window_RenderFrame(object sender, FrameEventArgs e)
         {
             //Clear screen color
-            GL.ClearColor(Color.White);
+            GL.ClearColor(Color.Wheat);
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             //Enable color blending, which allows transparency
@@ -143,33 +149,31 @@ namespace Fablab_Creature
             GL.EnableClientState(ArrayCap.TextureCoordArray);
 
 
-            textWriter.WriteToScreen(new Vector2(0, 30), "This is written using the textwriter", window.Width, 20);
+            //textWriter.WriteToScreen(new Vector2(0, 30), bodyController.ToString(), window.Width, 20);
 
             //Bind the texture that will be used
             GL.BindTexture(TextureTarget.Texture2D, texture.ID);
 
             //Load the vert and index buffers
-            GL.BindBuffer(BufferTarget.ArrayBuffer, CursorBuf[0].VBO);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, buffer.VBO);
             GL.VertexPointer(2, VertexPointerType.Float, Vertex.SizeInBytes, (IntPtr)0);
             GL.TexCoordPointer(2, TexCoordPointerType.Float, Vertex.SizeInBytes, (IntPtr)(Vector2.SizeInBytes));
             GL.ColorPointer(4, ColorPointerType.Float, Vertex.SizeInBytes, (IntPtr)(Vector2.SizeInBytes * 2));
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, CursorBuf[0].IBO);
-
-            //Create a scale matrux
-            Matrix4 mat = Matrix4.CreateTranslation(0, 0, 0);   //Create a translation matrix
-            GL.MatrixMode(MatrixMode.Modelview);                //Load the modelview matrix, last in the chain of view matrices
-            GL.LoadMatrix(ref mat);                             //Load the translation matrix into the modelView matrix
-            mat = Matrix4.CreateScale(1, 1, 0);                 //Create a scale matrix
-            GL.MultMatrix(ref mat);                              //Multiply the scale matrix with the modelview matrix
-            GL.PushMatrix();
-            GL.DrawElements(PrimitiveType.Quads, CursorBuf[0].indexBuffer.Length, DrawElementsType.UnsignedInt, 0);
-            GL.PopMatrix();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, buffer.IBO);
 
 
+            
+            bodyController.Draw(buffer);
             //Flush everything 
             GL.Flush();
             //Write the new buffer to the screen
+            long time = 0;
+            stop.Start();
+            time = stop.ElapsedMilliseconds;
+            Console.Error.WriteLine(stop.ElapsedMilliseconds);
             window.SwapBuffers();
+            Console.Error.WriteLine(stop.ElapsedMilliseconds + " ! " + (stop.ElapsedMilliseconds - time));
+
         }
     }
 }
